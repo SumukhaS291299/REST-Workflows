@@ -1,0 +1,48 @@
+WorkFlow:
+  #  Workflow must run in same order
+  #  If Workflow order is false, it'll run simultaneously
+  Driver: default  # default, httpie
+  Order: true # Run in parallel | Not recommended as response will be mangled
+  Debug: false
+#  Type: colorful   # Will soon add validations to type | colorful will only work in default
+  Crawler:
+    - Scheme: https
+      Method: POST
+      SSLVerify: false
+      Auth:
+        type: "bearer" # basic, digest, bearer
+        Token: 'SomeTok' # Token
+      Verbose: true
+      URL: 'httpbin.org/post'
+      Headers:
+        - Cookie: 'valued-visitor=yes;foo=bar'
+      PayLoad:
+        json: "I://RestWorkflows//testJson.json"   # Absolute path of json file as string (Escape )
+    - Scheme: https
+      Sessions:
+        Runs: 1
+      Verbose: true
+      Method: GET
+      SSLVerify: false
+      URL: httpie.io/hello
+    - Scheme: http
+      Method: GET
+      Auth:
+        type: "basic" # basic, digest, bearer
+        Username: 'admin'
+        Password: 'password' # Token
+      SSLVerify: true
+      URL: 'httpie.io/hello'
+      Headers:
+        - Cookie: 'valued-visitor=yes;foo=bar'
+    - Scheme: https
+      Method: POST
+      SSLVerify: false
+      Verbose: true
+      URL: 'httpbin.org/post'
+      Headers:
+        - Cookie: 'valued-visitor=yes;foo=bar'
+      PayLoad:
+        json: "I://RestWorkflows//testJson.json"   # Absolute path of json file as string (Escape )
+
+# http --auth=admin:password --verify=no GET http://httpie.io/hello Cookie:valued-visitor=yes;foo=bar @path
