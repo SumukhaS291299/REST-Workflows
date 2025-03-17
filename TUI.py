@@ -1,6 +1,5 @@
 import multiprocessing
 import os
-import time
 
 import yaml
 from textual.app import App, ComposeResult

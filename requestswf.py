@@ -1,3 +1,5 @@
+import json
+
 import requests
 from colorama import Fore, Style, init
 from rich.console import Console, Group
@@ -41,12 +43,15 @@ def make_requests_from_yaml(config):
                 headers['Authorization'] = f"Bearer {crawler['Auth']['Token']}"
 
         if 'PayLoad' in crawler:
-            payload = crawler['PayLoad']
+            if crawler.get('PayLoad'):
+                filePath = crawler.get('PayLoad').get("json")
+                with open(filePath,"r") as payloadfile:
+                    payloadDict = json.load(payloadfile)
 
         runs = crawler.get('Sessions', {}).get('Runs', 1)
 
         for _ in range(runs):
-            response = session.request(method, url, headers=headers, auth=auth, verify=ssl_verify, json=payload)
+            response = session.request(method, url, headers=headers, auth=auth, verify=ssl_verify, json=payloadDict)
 
             stringBlob.append(Fore.CYAN + f"\n[{method}] {url}")
 
