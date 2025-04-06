@@ -15,7 +15,7 @@ build:
 
 clean:
 	@echo "Cleaning up..."
-	rm -rf build __pycache__ $(EXECUTABLE).spec
 	rm -rf $(DIST_DIR)
+	rm -rf build __pycache__ $(EXECUTABLE).spec
 
 rebuild: clean build

@@ -38,7 +38,7 @@ class Crawler:
         if httpcall.get("Verbose"):
             builder += " --verbose"
         if httpcall.get("Auth"):
-            authtype = httpcall["Auth"].get("Type")  # Fixed key lookup
+            authtype = httpcall["Auth"].get("type")  # Fixed key lookup
             username = httpcall["Auth"].get("Username")
             password = httpcall["Auth"].get("Password")
             bearer_tok = httpcall["Auth"].get("Token")

@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Workflow YAML Schema",
+  "type": "object",
+  "properties": {
+    "WorkFlow": {
+      "type": "object",
+      "required": ["Driver", "Order", "Crawler"],
+      "properties": {
+        "Driver": {
+          "type": "string",
+          "enum": ["default", "httpie"],
+          "description": "Which driver to use. Supported: default, httpie"
+        },
+        "Order": {
+          "type": "boolean",
+          "description": "If true, crawlers run in sequence. False means they run in parallel."
+        },
+        "Debug": {
+          "type": "boolean",
+          "description": "Debug flag for non-default drivers"
+        },
+        "Crawler": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["Scheme", "Method", "URL"],
+            "properties": {
+              "Scheme": {
+                "type": "string",
+                "enum": ["http", "https"],
+                "description": "The URL scheme"
+              },
+              "Method": {
+                "type": "string",
+                "enum": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                "description": "HTTP Method"
+              },
+              "SSLVerify": {
+                "type": "boolean",
+                "description": "Whether to verify the SSL certificate"
+              },
+              "Verbose": {
+                "type": "boolean",
+                "description": "Enable verbose output"
+              },
+              "URL": {
+                "type": "string",
+                "description": "Target URL (excluding scheme)"
+              },
+              "Auth": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "required": ["type", "Username", "Password"],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["basic", "digest"],
+                        "description": "Authentication type"
+                      },
+                      "Username": {
+                        "type": "string"
+                      },
+                      "Password": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "required": ["type", "Token"],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["bearer"]
+                      },
+                      "Token": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              },
+              "Headers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^.*$": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "description": "HTTP headers as list of key-value maps"
+              },
+              "PayLoad": {
+                "type": "object",
+                "properties": {
+                  "json": {
+                    "type": "string",
+                    "description": "Absolute path to JSON file (escaped on Windows)"
+                  }
+                }
+              },
+              "Sessions": {
+                "type": "object",
+                "properties": {
+                  "Runs": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Number of sessions to run"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

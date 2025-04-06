@@ -1,11 +1,18 @@
-WorkFlow:
-  #  Workflow must run in same order
-  #  If Workflow order is false, it'll run simultaneously
-  Driver: default  # default, httpie
-  Order: true # Run in parallel | Not recommended as response will be mangled
-  Debug: false
-#  Type: colorful   # Will soon add validations to type | colorful will only work in default
+WorkFlow: # All key are Case Sensitive
+  Driver: httpie  # default, httpie
+  Order: true # If true all Crawler one after other in sequence | false will run simultaneously Not recommended as response output will be mangled
+  Debug: false # non-default drivers will use it
+# validations:   # Will soon add validations to type
   Crawler:
+    - Scheme: https                               # The url Scheme (http or https)
+      Method: GET                                 # Http method
+      SSLVerify: false                            # To verify SSL certificate
+      Auth:                                       # Auth if needed
+        type: "basic"                             # As of now basic, digest, bearer
+        Username: 'admin'                         # if basic or digest => Username AND Password are to be specified
+        Password: 'pass'                          # if bearer => Token are to be specified
+      Verbose: true                               # To see verbose request and response
+      URL: 'httpbin.org/basic-auth/admin/pass'    # The URL without Scheme
     - Scheme: https
       Method: POST
       SSLVerify: false
@@ -14,13 +21,13 @@ WorkFlow:
         Token: 'SomeTok' # Token
       Verbose: true
       URL: 'httpbin.org/post'
-      Headers:
-        - Cookie: 'valued-visitor=yes;foo=bar'
-      PayLoad:
-        json: "I://RestWorkflows//testJson.json"   # Absolute path of json file as string (Escape )
+      Headers:                                    # Headders can be passed as list
+        - Cookie: 'valued-visitor=yes;foo=bar'    # It should be in key value pairs
+      PayLoad:                                    # The URL without Scheme
+        json: ".\\testJson.json"                  # Absolute path (Recomended if not in same dir) of json file as string (Escape on windows)
     - Scheme: https
       Sessions:
-        Runs: 1
+        Runs: 1                                   # if default dirver is selected Mutiple session can be run
       Verbose: true
       Method: GET
       SSLVerify: false
@@ -43,6 +50,13 @@ WorkFlow:
       Headers:
         - Cookie: 'valued-visitor=yes;foo=bar'
       PayLoad:
-        json: "I://RestWorkflows//testJson.json"   # Absolute path of json file as string (Escape )
+        json: ".\\testJson.json"   # Absolute path of json file as string (Escape on windows)
+    - Scheme: https
+      Sessions:
+        Runs: 1
+      Verbose: true
+      Method: GET
+      SSLVerify: false
+      URL: httpie.io/hello
 
 # http --auth=admin:password --verify=no GET http://httpie.io/hello Cookie:valued-visitor=yes;foo=bar @path
