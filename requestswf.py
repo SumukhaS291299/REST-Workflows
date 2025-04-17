@@ -41,7 +41,7 @@ def make_requests_from_yaml(config):
                 auth = (crawler['Auth']['Username'], crawler['Auth']['Password'])
             elif auth_type == 'bearer':
                 headers['Authorization'] = f"Bearer {crawler['Auth']['Token']}"
-
+        payloadDict = None
         if 'PayLoad' in crawler:
             if crawler.get('PayLoad'):
                 filePath = crawler.get('PayLoad').get("json")

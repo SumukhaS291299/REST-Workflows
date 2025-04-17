@@ -1,5 +1,5 @@
 WorkFlow: # All key are Case Sensitive
-  Driver: httpie  # default, httpie
+  Driver: default  # default, httpie
   Order: true # If true all Crawler one after other in sequence | false will run simultaneously Not recommended as response output will be mangled
   Debug: false # non-default drivers will use it
 # validations:   # Will soon add validations to type
@@ -12,7 +12,7 @@ WorkFlow: # All key are Case Sensitive
         Username: 'admin'                         # if basic or digest => Username AND Password are to be specified
         Password: 'pass'                          # if bearer => Token are to be specified
       Verbose: true                               # To see verbose request and response
-      URL: 'httpbin.org/basic-auth/admin/pass'    # The URL without Scheme
+      URL: 'httpie.io/hello'    # The URL without Scheme
     - Scheme: https
       Method: POST
       SSLVerify: false
@@ -20,7 +20,7 @@ WorkFlow: # All key are Case Sensitive
         type: "bearer" # basic, digest, bearer
         Token: 'SomeTok' # Token
       Verbose: true
-      URL: 'httpbin.org/post'
+      URL: 'httpie.io/hello'
       Headers:                                    # Headders can be passed as list
         - Cookie: 'valued-visitor=yes;foo=bar'    # It should be in key value pairs
       PayLoad:                                    # The URL without Scheme
@@ -31,7 +31,7 @@ WorkFlow: # All key are Case Sensitive
       Verbose: true
       Method: GET
       SSLVerify: false
-      URL: httpie.io/hello
+      URL: 'httpie.io/hello'
     - Scheme: http
       Method: GET
       Auth:
@@ -46,7 +46,7 @@ WorkFlow: # All key are Case Sensitive
       Method: POST
       SSLVerify: false
       Verbose: true
-      URL: 'httpbin.org/post'
+      URL: 'httpie.io/hello'
       Headers:
         - Cookie: 'valued-visitor=yes;foo=bar'
       PayLoad:
@@ -57,6 +57,6 @@ WorkFlow: # All key are Case Sensitive
       Verbose: true
       Method: GET
       SSLVerify: false
-      URL: httpie.io/hello
+      URL: 'httpie.io/hello'
 
 # http --auth=admin:password --verify=no GET http://httpie.io/hello Cookie:valued-visitor=yes;foo=bar @path
