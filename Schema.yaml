@@ -2,7 +2,10 @@ WorkFlow: # All key are Case Sensitive
   Driver: default  # default, httpie
   Order: true # If true all Crawler one after other in sequence | false will run simultaneously Not recommended as response output will be mangled
   Debug: false # non-default drivers will use it
-# validations:   # Will soon add validations to type
+  # Add validations, (only with default driver)
+  # Strict - exit out  if validation fails
+  # Warn - displays as a summary block
+  validations: warn                               # warn, strict
   Crawler:
     - Scheme: https                               # The url Scheme (http or https)
       Method: GET                                 # Http method
@@ -13,6 +16,18 @@ WorkFlow: # All key are Case Sensitive
         Password: 'pass'                          # if bearer => Token are to be specified
       Verbose: true                               # To see verbose request and response
       URL: 'httpie.io/hello'    # The URL without Scheme
+      validate:
+        - status-code: 200
+        - reason: OK
+#        - elapsed seconds not exceed: # will support soon with some more
+#        - elapsed seconds not under:   # will support soon with some more
+        - response contains:
+            json :
+              key_path: links.homepage
+              value: https://httpie.io
+            headers:
+              key: Server
+              value: ANY
     - Scheme: https
       Method: POST
       SSLVerify: false
